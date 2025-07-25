@@ -12,3 +12,4 @@ def generate_video(request: GenerationRequest) -> GenerationResult:
         processingTime=round(time.time() - start, 2),
         status="completed",
     )
+
