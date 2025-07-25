@@ -1,0 +1,23 @@
+# ============= FRONTEND (Next.js) =============
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# ============= BACKEND (FastAPI / Python) =============
+# Python virtual environments
+backend/env/
+backend/venv/
+
+# ============= SHARED / GLOBAL =============
+# Ignore all .env files anywhere
+**/.env*
