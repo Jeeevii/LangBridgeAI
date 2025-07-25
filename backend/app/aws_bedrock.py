@@ -5,7 +5,10 @@ from botocore.exceptions import ClientError
 
 class BedrockService:
     def __init__(self, region_name: str = "us-east-1"):
-        self.bedrock = boto3.client("bedrock-runtime", region_name=region_name)
+        self.bedrock = boto3.client(
+            service_name="bedrock-runtime",
+            region_name=region_name
+        )
     
     def generate_content(self, prompt: str, model_id: str = "anthropic.claude-3-sonnet-20240229-v1:0") -> str:
         """Generate content using Amazon Bedrock"""
