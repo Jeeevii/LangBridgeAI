@@ -1,4 +1,4 @@
-from app.schemas import ResearchContext, GeneratedVideo, VoiceOver
+from backend.app.request_schemas import ResearchContext, GeneratedVideo, VoiceOver
 from datetime import datetime
 
 mockResearchContext = [

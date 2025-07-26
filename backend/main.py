@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.schemas import GenerationRequest, GenerationResult, ExportResponse
-from app.services.generator import generate_video
+from app.agent_models import GenerationRequest, GenerationResult, ExportResponse
+#from app.workers.generator import generate_video
+from app.agent_models import GenerationRequest
+from app.agent_chain import run_video_generation_pipeline
 
 app = FastAPI()
 
@@ -15,8 +17,10 @@ app.add_middleware(
 )
 
 @app.post("/generate", response_model=GenerationResult)
-def generate(request: GenerationRequest):
-    return generate_video(request)
+def generate_video_ad(request: GenerationRequest):
+    result = run_video_generation_pipeline(request)
+    return result
+
 
 @app.get("/export/{video_id}", response_model=ExportResponse)
 def export_video(video_id: str, format: str):

@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 from typing import List, Literal
 
+class ReasoningAgentResult(BaseModel):
+    next_step: str
+    reason: str
+
+
 class GenerationRequest(BaseModel):
     description: str
     region: str
