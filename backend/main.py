@@ -47,3 +47,15 @@ def bedrock_prompt(request: PromptRequest):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+@app.post("/brightdata")
+def brightdata_prompt(request: PromptRequest):
+    """Send prompt to Brightdata and return response"""
+    try:
+        from app.brightdata import BrightdataService
+
+        brightdata = BrightdataService()
+        response = brightdata.generate_content(request.prompt)
+        return {"success": True, "response": response}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
