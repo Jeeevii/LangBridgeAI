@@ -10,8 +10,9 @@ class BedrockService:
             region_name=region_name
         )
     
-    def generate_content(self, prompt: str, model_id: str = "anthropic.claude-3-sonnet-20240229-v1:0") -> str:
-        """Generate content using Amazon Bedrock"""
+    def generate_content(self, prompt: str, model_id: str = "us.anthropic.claude-sonnet-4-20250514-v1:0") -> str:
+        """Generate content using Amazon Bedrock with Claude Sonnet 3"""
+
         try:
             body = {
                 "anthropic_version": "bedrock-2023-05-31",
@@ -72,4 +73,38 @@ class BedrockService:
             "summary": research_content,
             "sources": ["Amazon Bedrock AI Analysis"],
             "confidence": 85
+        }
+    def find_trend_websites(self, marketing_prompt: str, region: str = "japan", product_category: Optional[str] = None) -> Dict[str, Any]:
+        """Find trending websites and reviews based on a marketing message"""
+        
+        category_text = f" in the category of {product_category}" if product_category else ""
+        
+        prompt = f"""
+        Based on the following marketing message:
+
+        \"{marketing_prompt}\"
+
+        Do the following:
+        1. Identify current consumer trends{category_text}.
+        2. List 5 active websites that:
+        - Sell relevant products
+        - Feature popular or trending items
+        - Include customer reviews
+        3. For each website, summarize what type of products they offer and any interesting review trends.
+        4. Focus on sources relevant to the {region} region.
+
+        Format your response as a list of websites with:
+        - Website Name & URL
+        - Summary of Products
+        - Review or Trend Insight
+        """
+            
+        result = self.generate_content(prompt)
+        
+        return {
+            "category": "Web Trend Discovery",
+            "title": f"Trend Sites for: {marketing_prompt[:40]}...",
+            "results": result,
+            "source": "Amazon Bedrock AI (Claude Sonnet)",
+            "confidence": 80
         }

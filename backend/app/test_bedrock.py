@@ -16,7 +16,7 @@ def test_bedrock():
         prompt = "Write a short story about AI helping humans in 100 words."
         
         print("Calling Bedrock...")
-        response = bedrock.generate_content(prompt)
+        response = bedrock.find_trend_websites(prompt)
         
         print("\n--- Bedrock Response ---")
         print(response)

@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dotenv import load_dotenv
 from app.schemas import GenerationRequest, GenerationResult, ExportResponse
 from app.services.generator import generate_video
@@ -8,6 +9,10 @@ from app.services.generator import generate_video
 load_dotenv()
 
 app = FastAPI()
+
+# Class for Request Body for a prompt of type string
+class PromptRequest(BaseModel):
+    prompt: str
 
 # Enable CORS for frontend dev
 app.add_middleware(
@@ -26,17 +31,14 @@ def generate(request: GenerationRequest):
 def export_video(video_id: str, format: str):
     return ExportResponse(downloadUrl=f"https://example.com/exports/{video_id}.{format}")
 
-@app.post("/test-bedrock")
-def test_bedrock_endpoint(prompt: str = "Hello, how are you?"):
-    """Test endpoint for Bedrock LLM calls"""
+@app.post("/bedrock")
+def bedrock_prompt(request: PromptRequest):
+    """Send prompt to Bedrock and return response"""
     try:
-        import sys
-        import os
-        sys.path.append(os.path.dirname(__file__))
         from app.aws_bedrock import BedrockService
         
         bedrock = BedrockService()
-        response = bedrock.generate_content(prompt)
+        response = bedrock.generate_content(request.prompt)
         return {"success": True, "response": response}
     except Exception as e:
         return {"success": False, "error": str(e)}
